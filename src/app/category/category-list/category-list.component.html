@@ -11,7 +11,7 @@
         <ion-list>
           <ion-item>
             <ion-icon name="swap-vertical" slot="start"></ion-icon>
-            <ion-select interface="popover" formcontrolname="sort">
+            <ion-select interface="popover">
               <ion-select-option> Created at (newest first) </ion-select-option>
               <ion-select-option> Created at (oldest first) </ion-select-option>
               <ion-select-option> Name (A-Z) </ion-select-option>
@@ -33,20 +33,8 @@
   </ion-grid>
 
   <ion-list>
-    <ion-item>
+    <ion-item [button]="true" (click)="openModal()">
       <ion-label>Pokémon Yellow</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Mega Man X</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>The Legend of Zelda</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Pac-Man</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Super Mario World</ion-label>
     </ion-item>
   </ion-list>
 
