@@ -23,13 +23,14 @@ const routes: Routes = [
     title: 'Expenses | Budget UI',
   },
   {
-    path: '**',
-    redirectTo: defaultPath,
-  },
-  {
     path: loginPath,
     component: LoginComponent
   },
+  {
+    path: '**',
+    redirectTo: defaultPath,
+  },
+
 ];
 
 @NgModule({
