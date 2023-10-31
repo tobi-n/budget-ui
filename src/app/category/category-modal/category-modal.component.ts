@@ -31,7 +31,6 @@ export class CategoryModalComponent {
   cancel(): void {
     this.modalCtrl.dismiss(null, 'cancel');
   }
-
   save(): void {
     this.submitting = true;
     this.categoryService

@@ -6,32 +6,28 @@
 </ion-header>
 <ion-content class="ion-padding">
 
-  <ion-grid>
+  <!-- Search & Sort -->
+  <ion-grid class="ion-padding" [formGroup]="searchForm">
     <ion-row>
-      <ion-col>
-        <ion-list>
-          <ion-item>
-            <ion-icon name="swap-vertical" slot="start"></ion-icon>
-            <ion-select interface="popover">
-              <ion-select-option> Created at (newest first) </ion-select-option>
-              <ion-select-option> Created at (oldest first) </ion-select-option>
-              <ion-select-option> Name (A-Z) </ion-select-option>
-              <ion-select-option> Name (Z-A) </ion-select-option>
-            </ion-select>
-          </ion-item>
-        </ion-list>
-
+      <ion-col size="12" size-sm="6">
+        <ion-item>
+          <ion-icon name="swap-vertical" slot="start"></ion-icon>
+          <ion-select interface="popover" formControlName="sort">
+            <ion-select-option *ngFor="let sortOption of sortOptions" [value]="sortOption.value">
+              {{sortOption.label}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
       </ion-col>
-      <ion-col>
-        <ion-list>
-          <ion-item>
-            <ion-icon name="search-outline" slot="start"></ion-icon>
-            <ion-input label="" placeholder="Search"></ion-input>
-          </ion-item>
-        </ion-list>
+      <ion-col size="12" size-sm="6">
+        <ion-item>
+          <ion-icon name="search" slot="start"></ion-icon>
+          <ion-input maxlength="40" placeholder="Search" [clearInput]="true" formControlName="name"></ion-input>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
+
 
   <!-- Category List -->
   <ion-list [ngSwitch]="categories?.length" inset="true">
@@ -44,6 +40,7 @@
         </ion-label>
       </ion-item>
     </ng-container>
+
 
     <!-- Empty List -->
     <ion-item *ngSwitchCase="0">
@@ -81,6 +78,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="reloadCategories($event)" [disabled]="loading">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
 
 
 </ion-content>
