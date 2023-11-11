@@ -3,16 +3,28 @@ import { ModalController } from '@ionic/angular';
 import { filter, from } from 'rxjs';
 import { CategoryModalComponent } from '../../category/category-modal/category-modal.component';
 import { ActionSheetService } from '../../shared/service/action-sheet.service';
+import {Category, Expense} from "../../shared/domain";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-expense-modal',
   templateUrl: './expense-modal.component.html',
 })
 export class ExpenseModalComponent {
+
+  readonly expenseForm: FormGroup;
+  submitting = false;
+  expense: Expense = {} as Expense;
+
   constructor(
     private readonly actionSheetService: ActionSheetService,
     private readonly modalCtrl: ModalController,
-  ) {}
+    private readonly formBuilder: FormBuilder,
+  ) {this.expenseForm = this.formBuilder.group({
+    id: [],
+    name: ['', [Validators.required, Validators.maxLength(40)]],
+  })
+  }
 
   cancel(): void {
     this.modalCtrl.dismiss(null, 'cancel');
@@ -33,5 +45,10 @@ export class ExpenseModalComponent {
     categoryModal.present();
     const { role } = await categoryModal.onWillDismiss();
     console.log('role', role);
+  }
+
+
+  ionViewWillEnter(): void {
+    this.expenseForm.patchValue(this.expense);
   }
 }
