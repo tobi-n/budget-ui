@@ -3,8 +3,9 @@ import { ModalController } from '@ionic/angular';
 import { filter, from } from 'rxjs';
 import { CategoryModalComponent } from '../../category/category-modal/category-modal.component';
 import { ActionSheetService } from '../../shared/service/action-sheet.service';
-import {Category, Expense} from "../../shared/domain";
+import {Expense} from "../../shared/domain";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+
 
 @Component({
   selector: 'app-expense-modal',
@@ -15,6 +16,7 @@ export class ExpenseModalComponent {
   readonly expenseForm: FormGroup;
   submitting = false;
   expense: Expense = {} as Expense;
+  datetime: Date = new Date();
 
   constructor(
     private readonly actionSheetService: ActionSheetService,
@@ -51,4 +53,6 @@ export class ExpenseModalComponent {
   ionViewWillEnter(): void {
     this.expenseForm.patchValue(this.expense);
   }
+
+
 }

@@ -1,53 +1,80 @@
-<div class="wrapper">
-    <ion-header>
-        <ion-toolbar>
-            <ion-buttons slot="start">
-                <ion-button color="medium" (click)="cancel()" [disabled]="submitting">
-                    <ion-icon slot="start" name="close"></ion-icon>
-                    Cancel
-                </ion-button>
-            </ion-buttons>
-            <ion-title>{{expense.id ? 'Edit' : 'Add'}} Expense</ion-title>
-            <ion-buttons slot="end">
-                <ion-button (click)="save()" [disabled]="expenseForm.pristine || expenseForm.invalid || submitting">
-                    <ion-icon slot="start" name="save"></ion-icon>
-                    Save
-                </ion-button>
-            </ion-buttons>
-            <ion-progress-bar *ngIf="submitting" type="indeterminate"></ion-progress-bar>
-        </ion-toolbar>
-    </ion-header>
 
-    <ion-content class="ion-padding" [formGroup]="expenseForm">
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button color="medium" (click)="cancel()" [disabled]="submitting">
+                <ion-icon slot="start" name="close"></ion-icon>
+                Cancel
+            </ion-button>
+        </ion-buttons>
+        <ion-title>{{expense.id ? 'Edit' : 'Add'}} Expense</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="save()" [disabled]="expenseForm.pristine || expenseForm.invalid || submitting">
+                <ion-icon slot="start" name="save"></ion-icon>
+                Save
+            </ion-button>
+       </ion-buttons>
+        <ion-progress-bar *ngIf="submitting" type="indeterminate"></ion-progress-bar>
+    </ion-toolbar>
+</ion-header>
+
+<!-- Details -->
+
+<ion-content class="ion-padding" [formGroup]="expenseForm">
+
+
+        <!-- Input name -->
+
         <ion-item>
             <ion-icon name="text" slot="start"></ion-icon>
             <ion-input
-                    [disabled]="submitting"
-                    formControlName="name"
-                    maxlength="40"
-                    placeholder="Enter the expense's name"
-                    required="true"
+                [disabled]="submitting"
+                formControlName="name"
+                maxlength="40"
+                placeholder="Enter the expense's name"
+                required="true"
             ></ion-input>
         </ion-item>
+
+        <!-- Input category -->
 
         <ion-item>
             <ion-icon name="pricetag" slot="start"></ion-icon>
-            <ion-input
+            <ion-select
+                    interface="popover"
                     [disabled]="submitting"
-                    formControlName="name"
-                    maxlength="40"
-                    placeholder="Enter the expense's name"
+                    formControlName="categoryID"
+                    required="true"
+            ></ion-select>
+        </ion-item>
+
+        <!-- Input price -->
+
+        <ion-item>
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-input
+                    inputmode="decimal"
+                    placeholder="Enter the amount in CHF"
+                    type="number"
+                    [disabled]="submitting"
+                    formControlName="amount"
                     required="true"
             ></ion-input>
         </ion-item>
 
-    </ion-content>
+        <!-- Input date -->
 
-    <ion-fab *ngIf="expense.id" slot="fixed" vertical="bottom" horizontal="end">
-        <ion-fab-button (click)="delete()" color="danger" [disabled]="submitting">
-            <ion-icon name="trash"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
+        <ion-item>
+            <ion-icon name="calendar" slot="start"></ion-icon>
+            <ion-datetime-button slot="end" color="primary" datetime="datetime" presentation="date-only">Date</ion-datetime-button>
+        </ion-item>
+
+</ion-content>
+
+<ion-fab *ngIf="expense.id" slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="delete()" color="danger" [disabled]="submitting">
+        <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
 
 
-</div>
