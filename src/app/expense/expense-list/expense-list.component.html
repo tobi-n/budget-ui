@@ -22,9 +22,9 @@
     <ion-col size="12" size-sm="4">
       <ion-item>
         <ion-icon name="pricetag" slot="start"></ion-icon>
-        <ion-select interface="popover" formControlName="sort">
-          <ion-select-option *ngFor="let sortOption of sortOptions" [value]="sortOption.value">
-            {{sortOption.label}}
+        <ion-select interface="popover" formControlName="sort" [multiple]="true">
+          <ion-select-option >
+
           </ion-select-option>
         </ion-select>
       </ion-item>
@@ -56,7 +56,7 @@
       <ion-label> No expenses found </ion-label>
     </ion-item>
 
-    <!-- Categories -->
+    <!-- Expenses -->
     <ng-container *ngSwitchDefault>
       <ion-item
         button="true"

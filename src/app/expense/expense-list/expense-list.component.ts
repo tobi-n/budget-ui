@@ -3,10 +3,12 @@ import { addMonths, set } from 'date-fns';
 import {InfiniteScrollCustomEvent, ModalController, RefresherCustomEvent} from '@ionic/angular';
 import { ExpenseModalComponent } from '../expense-modal/expense-modal.component';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {debounce, finalize, interval, Subscription} from "rxjs";
-import {Expense, ExpenseCriteria, SortOption} from "../../shared/domain";
+import {debounce, finalize, interval, Observable, Subscription} from "rxjs";
+import {Category, Expense, ExpenseCriteria, SortOption} from "../../shared/domain";
 import {ExpenseService} from "../expense.service";
 import {ToastService} from "../../shared/service/toast.service";
+import {CategoryService} from "../../category/category.service";
+
 
 @Component({
   selector: 'app-expense-overview',
@@ -20,12 +22,14 @@ export class ExpenseListComponent {
   lastPageReached = false;
   searchCriteria: ExpenseCriteria = { page: 0, size: 25, sort: this.initialSort };
   private readonly searchFormSubscription: Subscription;
+
   constructor(
 
     private readonly modalCtrl: ModalController,
     private readonly formBuilder: FormBuilder,
     private readonly expenseService: ExpenseService,
     private readonly toastService: ToastService,
+    private readonly categoryService: CategoryService,
 
   ) {
     this.searchForm = this.formBuilder.group({name: [], sort: [this.initialSort]});
@@ -93,5 +97,7 @@ export class ExpenseListComponent {
     this.searchCriteria.page = 0;
     this.loadExpenses(() => ($event ? ($event as RefresherCustomEvent).target.complete() : {}));
   }
+
+
 
 }
