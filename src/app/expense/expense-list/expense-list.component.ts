@@ -94,9 +94,17 @@ export class ExpenseListComponent {
           next: (expenses) => {
             if (this.searchCriteria.page === 0 || !this.expenses) this.expenses = [];
 
+            // Extract the selected year and month
+            const selectedYear = this.date.getFullYear();
+            const selectedMonth = this.date.getMonth();
+
+            // Filter expenses based on the selected year and month
             const filteredExpenses = expenses.content.filter(expense => {
               const expenseDate = new Date(expense.date);
-              return expenseDate.getMonth() === this.date.getMonth();
+              const expenseYear = expenseDate.getFullYear();
+              const expenseMonth = expenseDate.getMonth();
+
+              return expenseYear === selectedYear && expenseMonth === selectedMonth;
             });
 
             this.expenses.push(...filteredExpenses);
