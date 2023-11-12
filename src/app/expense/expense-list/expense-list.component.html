@@ -23,8 +23,8 @@
       <ion-item>
         <ion-icon name="pricetag" slot="start"></ion-icon>
         <ion-select interface="popover" formControlName="sort" [multiple]="true">
-          <ion-select-option >
-
+          <ion-select-option *ngFor="let category of categories" [value]="category.value">
+            {{ category.label }}
           </ion-select-option>
         </ion-select>
       </ion-item>

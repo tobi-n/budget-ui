@@ -1,18 +1,20 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { addMonths, set } from 'date-fns';
 import {InfiniteScrollCustomEvent, ModalController, RefresherCustomEvent} from '@ionic/angular';
 import { ExpenseModalComponent } from '../expense-modal/expense-modal.component';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {debounce, finalize, interval, Observable, Subscription} from "rxjs";
-import {Category, Expense, ExpenseCriteria, SortOption} from "../../shared/domain";
+import {CategoryCriteria, Expense, ExpenseCriteria, SortOption} from "../../shared/domain";
 import {ExpenseService} from "../expense.service";
 import {ToastService} from "../../shared/service/toast.service";
+import {CategoryListComponent} from "../../category/category-list/category-list.component";
 import {CategoryService} from "../../category/category.service";
 
 
 @Component({
   selector: 'app-expense-overview',
   templateUrl: './expense-list.component.html',
+
 })
 export class ExpenseListComponent {
   date = set(new Date(), { date: 1 });
@@ -22,6 +24,7 @@ export class ExpenseListComponent {
   lastPageReached = false;
   searchCriteria: ExpenseCriteria = { page: 0, size: 25, sort: this.initialSort };
   private readonly searchFormSubscription: Subscription;
+  categories: any[] | undefined;
 
   constructor(
 
@@ -96,6 +99,24 @@ export class ExpenseListComponent {
   reloadExpenses($event?: any): void {
     this.searchCriteria.page = 0;
     this.loadExpenses(() => ($event ? ($event as RefresherCustomEvent).target.complete() : {}));
+  }
+
+  ngOnInit(): void {
+    this.loadCategories();
+    this.loadExpenses();
+  }
+
+  private loadCategories(): void {
+    const defaultCriteria: CategoryCriteria = { page: 0, size: 25, sort: 'defaultSortField,defaultSortOrder' };
+
+    this.categoryService.getCategories(defaultCriteria).subscribe(
+      (categories) => {
+        this.categories = categories.content.map(category => ({ value: category.id, label: category.name }));
+      },
+      (error) => {
+        console.error('Error loading categories', error);
+      }
+    );
   }
 
 
