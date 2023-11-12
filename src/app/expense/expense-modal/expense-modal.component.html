@@ -40,12 +40,7 @@
 
         <ion-item>
             <ion-icon name="pricetag" slot="start"></ion-icon>
-            <ion-select
-                    interface="popover"
-                    [disabled]="submitting"
-                    formControlName="categoryID"
-                    required="true"
-            ></ion-select>
+
         </ion-item>
 
         <!-- Input price -->
@@ -58,7 +53,7 @@
                     type="number"
                     [disabled]="submitting"
                     formControlName="amount"
-                    required="true"
+                    required="false"
             ></ion-input>
         </ion-item>
 
@@ -66,7 +61,7 @@
 
         <ion-item>
             <ion-icon name="calendar" slot="start"></ion-icon>
-            <ion-datetime-button slot="end" color="primary" datetime="datetime" presentation="date-only">Date</ion-datetime-button>
+
         </ion-item>
 
 </ion-content>
