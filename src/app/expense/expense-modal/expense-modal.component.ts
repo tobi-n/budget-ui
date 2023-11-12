@@ -30,8 +30,8 @@ export class ExpenseModalComponent {
   ) {this.expenseForm = this.formBuilder.group({
     id: [],
     name: ['', [Validators.required, Validators.maxLength(40)]],
-    amount: [''],
-    date: [''],
+      amount: [null, [Validators.required]],
+      date: [''],
 
   })
   }
@@ -47,15 +47,15 @@ export class ExpenseModalComponent {
       .pipe(finalize(() => (this.submitting = false)))
       .subscribe({
         next: () => {
-          this.toastService.displaySuccessToast('Category saved');
+          this.toastService.displaySuccessToast('Expense saved');
           this.modalCtrl.dismiss(null, 'refresh');
         },
-        error: (error) => this.toastService.displayErrorToast('Could not save category', error),
+        error: (error) => this.toastService.displayErrorToast('Could not save expense', error),
       });
   }
 
     delete(): void {
-        from(this.actionSheetService.showDeletionConfirmation('Are you sure you want to delete this category?'))
+        from(this.actionSheetService.showDeletionConfirmation('Are you sure you want to delete this expense?'))
             .pipe(
                 filter((action) => action === 'delete'),
                 tap(() => (this.submitting = true)),
@@ -64,16 +64,19 @@ export class ExpenseModalComponent {
             )
             .subscribe({
                 next: () => {
-                    this.toastService.displaySuccessToast('Category deleted');
+                    this.toastService.displaySuccessToast('Expense deleted');
                     this.modalCtrl.dismiss(null, 'refresh');
                 },
-                error: (error) => this.toastService.displayErrorToast('Could not delete category', error),
+                error: (error) => this.toastService.displayErrorToast('Could not delete expense', error),
             });
     }
 
-  ionViewWillEnter(): void {
-    this.expenseForm.patchValue(this.expense);
-  }
+    ionViewWillEnter(): void {
+        this.expenseForm.patchValue({
+            name: this.expense.name,
+            amount: this.expense.amount
+        });
+    }
 
 
 }

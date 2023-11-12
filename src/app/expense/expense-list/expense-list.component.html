@@ -58,6 +58,7 @@
 
     <!-- Expenses -->
     <ng-container *ngSwitchDefault>
+
       <ion-item
         button="true"
         *ngFor="let expense of expenses"
@@ -66,7 +67,10 @@
         (click)="openModal(expense)"
       >
         <ion-label> {{expense.name}} </ion-label>
+        <ion-label> {{expense.category}} </ion-label>
+        <ion-label> {{expense.amount}} </ion-label>
       </ion-item>
+
     </ng-container>
 
   </ion-list>
@@ -90,3 +94,22 @@
 
 
 </ion-content>
+
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="addMonths(-1)">
+        <ion-icon name="arrow-back-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ date | date: 'MMMM yyyy' }}
+    </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="addMonths(1)">
+        <ion-icon name="arrow-forward-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

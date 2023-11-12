@@ -30,6 +30,7 @@
     "@ionic/angular-server": "^7.3.0",
     "date-fns": "^2.30.0",
     "ionicons": "^7.1.2",
+    "lodash-es": "^4.17.21",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.1"
