@@ -72,9 +72,10 @@ export class ExpenseModalComponent {
       .subscribe({
         next: () => {
           this.toastService.displaySuccessToast('Expense saved');
-          this.modalCtrl.dismiss(null, 'refresh');
+          this.modalCtrl.dismiss(null, 'refresh'); // Emit 'refresh' when dismissing
         },
-        error: (error) => this.toastService.displayErrorToast('Could not save expense', error),
+        error: (error) =>
+          this.toastService.displayErrorToast('Could not save expense', error),
       });
   }
 

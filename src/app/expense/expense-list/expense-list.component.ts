@@ -76,7 +76,9 @@ export class ExpenseListComponent {
     { label: 'Name (A-Z)', value: 'name,asc' },
     { label: 'Name (Z-A)', value: 'name,desc' },
   ];
-
+  ionViewDidEnter(): void {
+    this.loadExpenses();
+  }
 
   private loadExpenses(next: () => void = () => {}): void {
     if (!this.searchCriteria.name) delete this.searchCriteria.name;
@@ -94,11 +96,9 @@ export class ExpenseListComponent {
           next: (expenses) => {
             if (this.searchCriteria.page === 0 || !this.expenses) this.expenses = [];
 
-            // Extract the selected year and month
             const selectedYear = this.date.getFullYear();
             const selectedMonth = this.date.getMonth();
 
-            // Filter expenses based on the selected year and month
             const filteredExpenses = expenses.content.filter(expense => {
               const expenseDate = new Date(expense.date);
               const expenseYear = expenseDate.getFullYear();
@@ -107,7 +107,7 @@ export class ExpenseListComponent {
               return expenseYear === selectedYear && expenseMonth === selectedMonth;
             });
 
-            this.expenses.push(...filteredExpenses);
+            this.expenses = filteredExpenses;
             this.lastPageReached = expenses.last;
           },
           error: (error) => this.toastService.displayErrorToast('Could not load expenses', error),
@@ -119,9 +119,13 @@ export class ExpenseListComponent {
         this.loadExpenses(() => ($event as InfiniteScrollCustomEvent).target.complete());
     }
 
-  reloadExpenses($event?: any): void {
+  reloadExpenses(event: any): void {
     this.searchCriteria.page = 0;
-    this.loadExpenses(() => ($event ? ($event as RefresherCustomEvent).target.complete() : {}));
+    this.loadExpenses(() => {
+      if (event) {
+        event.target.complete();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -130,6 +134,7 @@ export class ExpenseListComponent {
   }
 
   private loadCategories(): void {
+
     const defaultCriteria: CategoryCriteria = { page: 0, size: 25, sort: 'defaultSortField,defaultSortOrder' };
 
     this.categoryService.getCategories(defaultCriteria).subscribe(
@@ -160,6 +165,16 @@ export class ExpenseListComponent {
     });
 
     return filteredExpenses;
+  }
+
+  getExpensesSwitchValue(): number | null {
+    if (this.loading) {
+      return null;
+    } else if (!this.expenses || this.expenses.length === 0) {
+      return 0;
+    } else {
+      return this.expenses.length;
+    }
   }
 
 

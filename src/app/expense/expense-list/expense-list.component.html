@@ -22,7 +22,7 @@
     <ion-col size="12" size-sm="4">
       <ion-item>
         <ion-icon name="pricetag" slot="start"></ion-icon>
-        <ion-select interface="popover" formControlName="sort" [multiple]="true">
+        <ion-select interface="popover" formControlName="sort" [multiple]="true" placeholder="Kategorien">
           <ion-select-option *ngFor="let category of categories" [value]="category.value">
             {{ category.label }}
           </ion-select-option>
@@ -39,7 +39,7 @@
 </ion-grid>
 
 
-  <ion-list [ngSwitch]="expenses?.length" inset="true">
+  <ion-list [ngSwitch]="getExpensesSwitchValue()" inset="true">
 
     <!-- Skeleton -->
     <ng-container *ngSwitchCase="null">
