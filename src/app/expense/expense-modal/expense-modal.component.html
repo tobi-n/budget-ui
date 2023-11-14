@@ -70,7 +70,13 @@
 
         <ion-item>
             <ion-icon name="calendar" slot="start"></ion-icon>
-
+          <ion-datetime
+            [disabled]="submitting"
+            formControlName="date"
+            displayFormat="YYYY-MM-DDTHH:mm:ss.SSSZ"
+            pickerFormat="YYYY-MM-DDTHH:mm:ss.SSSZ"
+            placeholder="Select Date"
+          ></ion-datetime>
         </ion-item>
 
 </ion-content>

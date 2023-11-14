@@ -21,6 +21,8 @@ export class ExpenseModalComponent {
   expense: Expense = {} as Expense;
   datetime: Date = new Date();
   categories: Category[] = [];
+  minDate: string;
+  maxDate: string;
   constructor(
     private readonly actionSheetService: ActionSheetService,
     private readonly modalCtrl: ModalController,
@@ -36,6 +38,8 @@ export class ExpenseModalComponent {
       categoryId: [null],
 
   })
+      this.minDate = new Date().toISOString(); // Example: set to current date
+      this.maxDate = new Date(new Date().getFullYear() + 1, 11, 31).toISOString()
   }
 
   cancel(): void {
@@ -74,6 +78,23 @@ export class ExpenseModalComponent {
     }
 
     ionViewWillEnter(): void {
+        if (this.expense.id) {
+            // When editing, set the initial value for the date
+            this.expenseForm.patchValue({
+                id: this.expense.id,
+                name: this.expense.name,
+                amount: this.expense.amount,
+                date: this.expense.date, // Assuming this is a valid date value
+            });
+        } else {
+            // It's a new expense, set default or initial values
+            this.expenseForm.patchValue({
+                id: null,
+                name: '',
+                amount: null,
+                date: null,
+            });
+        }
 
       if (this.expense.id && this.expense.category && this.expense.category.id) {
         this.expenseForm.patchValue({
