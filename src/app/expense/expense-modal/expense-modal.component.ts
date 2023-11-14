@@ -77,41 +77,41 @@ export class ExpenseModalComponent {
             });
     }
 
-    ionViewWillEnter(): void {
-        if (this.expense.id) {
-            // When editing, set the initial value for the date
-            this.expenseForm.patchValue({
-                id: this.expense.id,
-                name: this.expense.name,
-                amount: this.expense.amount,
-                date: this.expense.date, // Assuming this is a valid date value
-            });
-        } else {
-            // It's a new expense, set default or initial values
-            this.expenseForm.patchValue({
-                id: null,
-                name: '',
-                amount: null,
-                date: null,
-            });
-        }
-
-      if (this.expense.id && this.expense.category && this.expense.category.id) {
-        this.expenseForm.patchValue({
-          categoryId: this.expense.category.id,
-        });
-      } else {
-
-        this.expenseForm.patchValue({
-          categoryId: null,
-        });
-      }
-
-        this.expenseForm.patchValue({
-            name: this.expense.name,
-            amount: this.expense.amount
-        });
+  ionViewWillEnter(): void {
+    if (this.expense.id) {
+      // When editing, set the initial value for the date
+      const expenseDate = new Date(this.expense.date); // Convert the date string to a Date object
+      this.expenseForm.patchValue({
+        id: this.expense.id,
+        name: this.expense.name,
+        amount: this.expense.amount,
+        date: expenseDate.toISOString(), // Convert the Date object back to ISO string
+      });
+    } else {
+      // It's a new expense, set default or initial values
+      this.expenseForm.patchValue({
+        id: null,
+        name: '',
+        amount: null,
+        date: null,
+      });
     }
+
+    if (this.expense.id && this.expense.category && this.expense.category.id) {
+      this.expenseForm.patchValue({
+        categoryId: this.expense.category.id,
+      });
+    } else {
+      this.expenseForm.patchValue({
+        categoryId: null,
+      });
+    }
+
+    this.expenseForm.patchValue({
+      name: this.expense.name,
+      amount: this.expense.amount
+    });
+  }
 
   ngOnInit(): void {
     this.loadCategories();
