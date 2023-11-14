@@ -42,6 +42,24 @@ export class ExpenseModalComponent {
       this.maxDate = new Date(new Date().getFullYear() + 1, 11, 31).toISOString()
   }
 
+
+  openCategoryModal(): void {
+    const categoryModal = this.modalCtrl.create({
+      component: CategoryModalComponent,
+    });
+
+    categoryModal.then((modal) => {
+      modal.present();
+
+      modal.onWillDismiss().then((result) => {
+        if (result.data === 'refresh') {
+
+          this.loadCategories();
+        }
+      });
+    });
+  }
+
   cancel(): void {
     this.modalCtrl.dismiss(null, 'cancel');
   }

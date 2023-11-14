@@ -50,6 +50,9 @@
         {{ category.name }}
       </ion-select-option>
     </ion-select>
+    <ion-button (click)="openCategoryModal()" [disabled]="submitting">
+      <ion-icon name="add-circle"></ion-icon>
+    </ion-button>
   </ion-item>
 
         <!-- Input price -->
