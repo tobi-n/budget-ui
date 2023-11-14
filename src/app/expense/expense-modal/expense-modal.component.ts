@@ -3,11 +3,11 @@ import { ModalController } from '@ionic/angular';
 import {filter, finalize, from, mergeMap, tap} from 'rxjs';
 import { CategoryModalComponent } from '../../category/category-modal/category-modal.component';
 import { ActionSheetService } from '../../shared/service/action-sheet.service';
-import {Expense} from "../../shared/domain";
+import {Category, CategoryCriteria, Expense, Page} from "../../shared/domain";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ExpenseService} from "../expense.service";
 import {ToastService} from "../../shared/service/toast.service";
-
+import {CategoryService} from "../../category/category.service";
 
 @Component({
   selector: 'app-expense-modal',
@@ -20,18 +20,20 @@ export class ExpenseModalComponent {
   submitting = false;
   expense: Expense = {} as Expense;
   datetime: Date = new Date();
-
+  categories: Category[] = [];
   constructor(
     private readonly actionSheetService: ActionSheetService,
     private readonly modalCtrl: ModalController,
     private readonly formBuilder: FormBuilder,
     private readonly expenseService: ExpenseService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly categoryService: CategoryService,
   ) {this.expenseForm = this.formBuilder.group({
     id: [],
     name: ['', [Validators.required, Validators.maxLength(40)]],
       amount: [null, [Validators.required]],
       date: [''],
+      categoryId: [null],
 
   })
   }
@@ -72,11 +74,37 @@ export class ExpenseModalComponent {
     }
 
     ionViewWillEnter(): void {
+
+      if (this.expense.id && this.expense.category && this.expense.category.id) {
+        this.expenseForm.patchValue({
+          categoryId: this.expense.category.id,
+        });
+      } else {
+
+        this.expenseForm.patchValue({
+          categoryId: null,
+        });
+      }
+
         this.expenseForm.patchValue({
             name: this.expense.name,
             amount: this.expense.amount
         });
     }
 
+  ngOnInit(): void {
+    this.loadCategories();
+  }
+
+  private loadCategories(): void {
+    this.categoryService.getCategories().subscribe(
+      (page: Page<Category>) => {
+        this.categories = page.content;
+      },
+      (error) => {
+        console.error('Error loading categories', error);
+      }
+    );
+  }
 
 }

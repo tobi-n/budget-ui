@@ -38,10 +38,19 @@
 
         <!-- Input category -->
 
-        <ion-item>
-            <ion-icon name="pricetag" slot="start"></ion-icon>
-
-        </ion-item>
+  <ion-item>
+    <ion-icon name="pricetag" slot="start"></ion-icon>
+    <ion-select
+      [disabled]="submitting"
+      formControlName="categoryId"
+      placeholder="Select a category"
+      interface="popover"
+    >
+      <ion-select-option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
 
         <!-- Input price -->
 
