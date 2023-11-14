@@ -66,9 +66,14 @@
         [disabled]="loading"
         (click)="openModal(expense)"
       >
+
         <ion-label> {{expense.name}} </ion-label>
-        <ion-label> {{expense.category.name}} </ion-label>
-        <ion-label> {{expense.amount}} </ion-label>
+        <ion-label>
+          <ion-icon name="pricetag" slot="start"></ion-icon>
+          {{expense.category.name}}
+        </ion-label>
+        <ion-label> {{ 'CHF ' + expense.amount }} </ion-label>
+
       </ion-item>
 
     </ng-container>
