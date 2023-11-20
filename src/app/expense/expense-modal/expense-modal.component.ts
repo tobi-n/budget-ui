@@ -98,21 +98,20 @@ export class ExpenseModalComponent {
 
   ionViewWillEnter(): void {
     if (this.expense.id) {
-      // When editing, set the initial value for the date
-      const expenseDate = new Date(this.expense.date); // Convert the date string to a Date object
+
+      const expenseDate = new Date(this.expense.date);
       this.expenseForm.patchValue({
         id: this.expense.id,
         name: this.expense.name,
         amount: this.expense.amount,
-        date: expenseDate.toISOString(), // Convert the Date object back to ISO string
+        date: expenseDate.toISOString(),
       });
     } else {
-      // It's a new expense, set default or initial values
       this.expenseForm.patchValue({
         id: null,
         name: '',
         amount: null,
-        date: null,
+        date: new Date().toISOString(),
       });
     }
 
@@ -126,10 +125,6 @@ export class ExpenseModalComponent {
       });
     }
 
-    this.expenseForm.patchValue({
-      name: this.expense.name,
-      amount: this.expense.amount
-    });
   }
 
   ngOnInit(): void {

@@ -74,14 +74,34 @@
 
         <ion-item>
             <ion-icon name="calendar" slot="start"></ion-icon>
-          <ion-datetime
-            [disabled]="submitting"
-            formControlName="date"
-            displayFormat="YYYY-MM-DDTHH:mm:ss.SSSZ"
-            pickerFormat="YYYY-MM-DDTHH:mm:ss.SSSZ"
-            placeholder="Select Date"
-          ></ion-datetime>
+<!--          <ion-datetime-->
+<!--            [disabled]="submitting"-->
+<!--            formControlName="date"-->
+<!--            displayFormat="YYYY-MM-DDTHH:mm:ss.SSSZ"-->
+<!--            pickerFormat="YYYY-MM-DDTHH:mm:ss.SSSZ"-->
+<!--            placeholder="Select Date"-->
+<!--          ></ion-datetime>-->
+
+          <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime
+                            id="datetime"
+                            presentation="date"
+                            [disabled]="submitting"
+                            formControlName="date"
+                            displayFormat="DD/MM/YYYY"
+                            pickerFormat="MM DD YYYY"
+                            placeholder="Select Date"
+
+              ></ion-datetime>
+            </ng-template>
+          </ion-modal>
+
         </ion-item>
+
+
 
 </ion-content>
 
