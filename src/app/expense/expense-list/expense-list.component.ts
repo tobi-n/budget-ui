@@ -1,4 +1,4 @@
-import {Component, Input, NgModule} from '@angular/core';
+import {Component, Input, NgModule, OnInit, OnDestroy} from '@angular/core';
 import {addMonths, parse, set} from 'date-fns';
 import {InfiniteScrollCustomEvent, ModalController, RefresherCustomEvent} from '@ionic/angular';
 import { ExpenseModalComponent } from '../expense-modal/expense-modal.component';
@@ -8,7 +8,7 @@ import {CategoryCriteria, Expense, ExpenseCriteria, SortOption} from "../../shar
 import {ExpenseService} from "../expense.service";
 import {ToastService} from "../../shared/service/toast.service";
 import {CategoryService} from "../../category/category.service";
-
+import {DataChangedService} from "../data-changed.service";
 
 
 @Component({
@@ -16,7 +16,7 @@ import {CategoryService} from "../../category/category.service";
   templateUrl: './expense-list.component.html',
 
 })
-export class ExpenseListComponent {
+export class ExpenseListComponent implements OnInit, OnDestroy {
   date = set(new Date(), { date: 1 });
   loading = false;
   readonly initialSort = 'name,asc';
@@ -26,7 +26,7 @@ export class ExpenseListComponent {
   private readonly searchFormSubscription: Subscription;
   categories: any[] | undefined;
   sort = new FormControl([]);
-
+  private dataChangedSubscription: Subscription;
   constructor(
 
     private readonly modalCtrl: ModalController,
@@ -34,7 +34,7 @@ export class ExpenseListComponent {
     private readonly expenseService: ExpenseService,
     private readonly toastService: ToastService,
     private readonly categoryService: CategoryService,
-
+    private dataChangedService: DataChangedService
 
   ) {
     this.searchForm = this.formBuilder.group({name: [], sort: [this.initialSort]});
@@ -49,6 +49,10 @@ export class ExpenseListComponent {
 
     this.expenses = this.getExpensesByDate(this.date);
 
+    this.dataChangedSubscription = this.dataChangedService.dataChanged$.subscribe(() => {
+      // Reload data when the event is emitted
+      this.loadExpenses();
+    });
 
   }
 
@@ -132,6 +136,7 @@ export class ExpenseListComponent {
   ngOnInit(): void {
     this.loadCategories();
     this.loadExpenses();
+
   }
 
   private loadCategories(): void {
@@ -183,5 +188,8 @@ export class ExpenseListComponent {
 
     this.expenses= this.expenses.filter(expense => selectedCategories?.includes(expense.category.name));
   }
-
+  ngOnDestroy(): void {
+    // Unsubscribe to avoid memory leaks
+    this.dataChangedSubscription.unsubscribe();
+  }
 }

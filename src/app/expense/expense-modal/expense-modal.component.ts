@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import {filter, finalize, from, mergeMap, tap} from 'rxjs';
 import { CategoryModalComponent } from '../../category/category-modal/category-modal.component';
@@ -8,6 +8,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ExpenseService} from "../expense.service";
 import {ToastService} from "../../shared/service/toast.service";
 import {CategoryService} from "../../category/category.service";
+import {DataChangedService} from "../data-changed.service";
+import {Data} from "@angular/router";
 
 @Component({
   selector: 'app-expense-modal',
@@ -23,6 +25,8 @@ export class ExpenseModalComponent {
   categories: Category[] = [];
   minDate: string;
   maxDate: string;
+  @Output() dataChanged: EventEmitter<void> = new EventEmitter<void>();
+
   constructor(
     private readonly actionSheetService: ActionSheetService,
     private readonly modalCtrl: ModalController,
@@ -30,6 +34,8 @@ export class ExpenseModalComponent {
     private readonly expenseService: ExpenseService,
     private readonly toastService: ToastService,
     private readonly categoryService: CategoryService,
+    private dataChangedService: DataChangedService,
+
   ) {this.expenseForm = this.formBuilder.group({
     id: [],
     name: ['', [Validators.required, Validators.maxLength(40)]],
@@ -72,6 +78,7 @@ export class ExpenseModalComponent {
       .subscribe({
         next: () => {
           this.toastService.displaySuccessToast('Expense saved');
+          this.dataChangedService.emitDataChanged();
           this.modalCtrl.dismiss(null, 'refresh'); // Emit 'refresh' when dismissing
         },
         error: (error) =>
@@ -90,6 +97,7 @@ export class ExpenseModalComponent {
             .subscribe({
                 next: () => {
                     this.toastService.displaySuccessToast('Expense deleted');
+                    this.dataChangedService.emitDataChanged();
                     this.modalCtrl.dismiss(null, 'refresh');
                 },
                 error: (error) => this.toastService.displayErrorToast('Could not delete expense', error),
