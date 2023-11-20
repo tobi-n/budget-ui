@@ -52,7 +52,7 @@
       </ion-select-option>
     </ion-select>
     <ion-button (click)="openCategoryModal()" [disabled]="submitting">
-      <ion-icon name="add-circle"></ion-icon>
+      <ion-icon name="add"></ion-icon>
     </ion-button>
   </ion-item>
 
@@ -68,6 +68,9 @@
                     formControlName="amount"
                     required="false"
             ></ion-input>
+          <ion-note slot="end">
+            CHF
+          </ion-note>
         </ion-item>
 
         <!-- Input date -->

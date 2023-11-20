@@ -2,7 +2,7 @@ import {Component, Input, NgModule} from '@angular/core';
 import {addMonths, parse, set} from 'date-fns';
 import {InfiniteScrollCustomEvent, ModalController, RefresherCustomEvent} from '@ionic/angular';
 import { ExpenseModalComponent } from '../expense-modal/expense-modal.component';
-import {FormBuilder, FormGroup, FormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, FormControl} from "@angular/forms";
 import {debounce, finalize, groupBy, interval, Observable, Subscription} from "rxjs";
 import {CategoryCriteria, Expense, ExpenseCriteria, SortOption} from "../../shared/domain";
 import {ExpenseService} from "../expense.service";
@@ -25,6 +25,7 @@ export class ExpenseListComponent {
   searchCriteria: ExpenseCriteria = { page: 0, size: 25, sort: this.initialSort };
   private readonly searchFormSubscription: Subscription;
   categories: any[] | undefined;
+  sort = new FormControl([]);
 
   constructor(
 
@@ -177,6 +178,10 @@ export class ExpenseListComponent {
     }
   }
 
+  filterExpenses(){
+    let selectedCategories = this.sort.value as string[];
 
+    this.expenses= this.expenses.filter(expense => selectedCategories?.includes(expense.category.name));
+  }
 
 }

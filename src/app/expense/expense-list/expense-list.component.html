@@ -22,7 +22,7 @@
     <ion-col size="12" size-sm="4">
       <ion-item>
         <ion-icon name="pricetag" slot="start"></ion-icon>
-        <ion-select interface="popover" formControlName="sort" [multiple]="true" placeholder="Kategorien">
+        <ion-select interface="popover" formControlName="sort" [multiple]="true" placeholder="Kategorien" (ionChange)="filterExpenses()">
           <ion-select-option *ngFor="let category of categories" [value]="category.value">
             {{ category.label }}
           </ion-select-option>
@@ -72,7 +72,7 @@
           <ion-icon name="pricetag" slot="start"></ion-icon>
           {{expense.category.name}}
         </ion-label>
-        <ion-label> {{ 'CHF ' + expense.amount }} </ion-label>
+        <ion-label> {{ 'CHF ' + expense.amount.toFixed(2) }} </ion-label>
 
       </ion-item>
 
